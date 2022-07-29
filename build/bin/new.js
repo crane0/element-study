@@ -1,5 +1,22 @@
 'use strict';
+/*
+  作用: 为组件库添加新组件。
+  举例：make new city 城市
+  会影响到13个文件。
+  1，在packages 目录下新建组件目录，并完成目录结构的构建
+  2，创建4种语言的组件文档，examples/docs/{lang}/city.md
+  3，创建组件单元测试文件 test/unit/specs/city.spec.js
+  4，创建组件样式文件 packages/theme-chalk/src/city.scss
+  5，创建组件类型声明文件 types/city.d.ts
+  6，配置
+    在 components.json 中配置组件信息
+    在 examples/nav.config.json 中添加新组件的路由配置
+    在 packages/theme-chalk/src/index.scss 引入新组件的样式文件
+    在 types/element-ui.d.ts 引入新组件的类型声明
 
+  注意，在开发环境下，即便执行了上面的命令，页面上也不会有新组件的标签页出现，
+  是因为入口文件并没有引入新组件。得执行一次 npm run build:file 才行。
+*/
 console.log();
 process.on('exit', () => {
   console.log();
@@ -18,6 +35,7 @@ const componentname = process.argv[2];
 const chineseName = process.argv[3] || componentname;
 const ComponentName = uppercamelcase(componentname);
 const PackagePath = path.resolve(__dirname, '../../packages', componentname);
+// 每个元素，都是要生成的新文件，总共13个
 const Files = [
   {
     filename: 'index.js',

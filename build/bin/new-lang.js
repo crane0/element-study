@@ -2,6 +2,11 @@
 /*
   作用：为组件库添加新语言的，并生成相关配置。
   执行 make new-lang fr 命令，可以看到生成（修改）了4个文件。
+  examples/nav.config.json
+  examples/i18n/component.json
+  examples/i18n/page.json
+  examples/i18n/route.json
+  默认是以英文做为模板的，只需要将新增的内容修改为对应的语言即可。
 */
 console.log();
 process.on('exit', () => {

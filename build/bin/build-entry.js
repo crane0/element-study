@@ -1,4 +1,4 @@
-// src/index.js 文件由该文件自动生成 
+// src/index.js 文件由该文件自动生成
 
 var Components = require('../../components.json');
 var fs = require('fs');

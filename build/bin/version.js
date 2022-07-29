@@ -1,3 +1,7 @@
+/*
+  根据 package.json 中的 version 和过往目录，生成新的目录。
+  会在官方文档的版本列表中使用到。
+*/
 var fs = require('fs');
 var path = require('path');
 var version = process.env.VERSION || require('../../package.json').version;
