@@ -1,3 +1,6 @@
+/*
+  主要实现了按需加载，将每个模块分别打包。
+*/
 const path = require('path');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');

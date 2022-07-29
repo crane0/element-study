@@ -1,3 +1,8 @@
+/*
+  官网 examples 目录的 webpack 配置
+  其中 isPlay 是在演示时，比如要开发一个新的组件时使用。
+  对应的也有 npm run dev:play
+*/
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');

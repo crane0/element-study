@@ -1,3 +1,7 @@
+/*
+  测试的 webpack 配置。
+  在 test/unit/karma.conf.js 中引入了。
+*/
 const path = require('path');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');

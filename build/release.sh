@@ -1,4 +1,10 @@
 #!/usr/bin/env sh
+# 合并 dev 分支到 master
+# 修改样式包和组件库的版本号
+# 发布样式包和组件库
+# 提交 master 和 dev 分支到远程仓库
+# 另外注意到，提交时的 commit msg 很简单：git commit -m "[build] $VERSION"
+# 这是因为更具体的修改放到了 CHANGELOG.zh-CN.md 中。
 set -e
 
 git checkout master

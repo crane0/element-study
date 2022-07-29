@@ -1,3 +1,7 @@
+/*
+  element-ui 的Chrome插件的配置。
+  当页面用到了 element-ui 时，可以使用插件实时调整页面主题
+*/
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const demoConfig = require('./webpack.demo');
