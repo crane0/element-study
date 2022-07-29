@@ -1,9 +1,13 @@
 'use strict';
+/*
+  生成目录，支持搜索？
+*/
 
 const fs = require('fs');
 const path = require('path');
 const algoliasearch = require('algoliasearch');
 const slugify = require('transliteration').slugify;
+// 应该是本地密钥，不会上传到 GitHub。
 const key = require('./algolia-key');
 
 const client = algoliasearch('4C63BTGP6S', key);

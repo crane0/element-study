@@ -1,5 +1,8 @@
 'use strict';
-
+/*
+  作用：为组件库添加新语言的，并生成相关配置。
+  执行 make new-lang fr 命令，可以看到生成（修改）了4个文件。
+*/
 console.log();
 process.on('exit', () => {
   console.log();
