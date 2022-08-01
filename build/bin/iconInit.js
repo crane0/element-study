@@ -7,7 +7,7 @@
 var postcss = require('postcss');
 var fs = require('fs');
 var path = require('path');
-var fontFile = fs.readFileSync(path.resolve(__dirname, '../../packages/theme-chalk/src/icon copy.scss'), 'utf8');
+var fontFile = fs.readFileSync(path.resolve(__dirname, '../../packages/theme-chalk/src/icon.scss'), 'utf8');
 var nodes = postcss.parse(fontFile).nodes;
 
 var classList = [];
@@ -19,7 +19,7 @@ var classList = [];
 nodes.forEach((node) => {
   // icon.scss 中每一个类名。
   var selector = node.selector || '';
-  console.log('selector', selector);
+  // console.log('selector', selector);
   // 为了找到符合 .el-icon-ice-cream-round:before 这样的类名。
   var reg = new RegExp(/\.el-icon-([^:]+):before/);
   /*
@@ -37,7 +37,7 @@ nodes.forEach((node) => {
     classList.push(arr[1]);
   }
 });
-console.log('classList', classList);
+// console.log('classList', classList);
 
 // classList 是所有符合下面格式的类名，取中间部分的集合
 // .el-icon-ice-cream-round:before => ice-cream-round

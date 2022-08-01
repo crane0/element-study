@@ -1,3 +1,17 @@
+注意，想要成功运行 `npm run dev`，必须得成功安装 `node-sass`
+
+如果安装`node-sass`失败，解决办法[参考](https://juejin.cn/post/6946530710324772878)。
+
+**我的解决办法，是匹配版本**
+
+注意到 `yarn.lock` 文件中 node-sass@^4.11.0，再根据上面的[node-sass依赖介绍](https://www.npmjs.com/package/node-sass)中，node应该使用 v11 版本。
+
+所以我本地使用 nvm 安装了 `nvm install v11.15.0` 版本，在这个版本下，使用 `yarn` 命令安装项目依赖，也成功安装了 `node-sass`。
+
+- 
+
+正文
+
 [参考](https://juejin.cn/post/6935977815342841892#heading-20)
 # 1，example 是官网项目。
 
@@ -39,4 +53,14 @@ element 使用 eslint 做代码规范，并且设置了自己的规范 `elemefe`
 
 其他模块，可以看 `npm run lint` 命令涉及到哪些。
 
+# 组件库
 
+组件库是由 packages 和 src 文件目录组成。
+理由模块化开发的思想，把组件饿依赖和一些公共模块放到 src 目录下，并依据功能拆分出以下模块
+- utils，定义一些工具方法
+- transition，动画
+- mixins，全局混入的一些方法
+- local，国际化功能以及各种语言的 部分组件 的翻译文件
+- directives，指令
+
+/src/index.js 是通过脚本 /build/bin/build-entry.js 脚本自动生成，是组件库的入口。负责自动导入组件库的所有组件、定义全量注册组件库组件的 install 方法，然后导出版本信息、install 和 各个组件。

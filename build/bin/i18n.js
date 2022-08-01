@@ -28,9 +28,9 @@ langConfig.forEach(lang => {
 
     Object.keys(pairs).forEach(key => {
       if (!once) {
-        console.log('pairs', pairs);
-        console.log('key', key);
-        console.log('content', content);
+        // console.log('pairs', pairs);
+        // console.log('key', key);
+        // console.log('content', content);
         once = true;
       }
       content = content.replace(new RegExp(`<%=\\s*${ key }\\s*>`, 'g'), pairs[key]);

@@ -1,3 +1,6 @@
+/*
+  官网项目的入口，就是一个普通的 vue 项目。
+*/
 import Vue from 'vue';
 import entry from './app';
 import VueRouter from 'vue-router';
@@ -12,6 +15,7 @@ import FooterNav from './components/footer-nav';
 import title from './i18n/title';
 
 import 'packages/theme-chalk/src/index.scss';
+// 官网项目页面展示效果的样式。排版。
 import './demo-styles/index.scss';
 import './assets/styles/common.css';
 import './assets/styles/fonts/style.css';
