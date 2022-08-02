@@ -4,7 +4,7 @@ var Components = require('../../components.json');
 var fs = require('fs');
 // 字符串模板库
 var render = require('json-templater/string');
-// 转驼峰
+// 转大驼峰
 var uppercamelcase = require('uppercamelcase');
 var path = require('path');
 // 为了应对不同系统的换行。参考 https://nodejs.org/api/os.html#oseol
@@ -73,6 +73,7 @@ export default {
 };
 `;
 
+// 已经用不到了。没有font属性了
 delete Components.font;
 
 var ComponentNames = Object.keys(Components);
@@ -93,8 +94,8 @@ ComponentNames.forEach(name => {
   // 不是下面这几个时，组装成最后的大驼峰组件名。替换模板中的 {{install}}
   if (['Loading', 'MessageBox', 'Notification', 'Message', 'InfiniteScroll'].indexOf(componentName) === -1) {
     installTemplate.push(render(INSTALL_COMPONENT_TEMPLATE, {
-      name: componentName,
-      component: name
+      name: componentName
+      // component: name
     }));
   }
   // 上面的模板字符串中已经有 Loading 了，第71行。
