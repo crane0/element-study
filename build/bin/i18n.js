@@ -33,6 +33,7 @@ langConfig.forEach(lang => {
         // console.log('content', content);
         once = true;
       }
+      // 将 .tpl 中的 <%= xxx > 语法替换为指定的内容
       content = content.replace(new RegExp(`<%=\\s*${ key }\\s*>`, 'g'), pairs[key]);
     });
 

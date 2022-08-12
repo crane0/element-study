@@ -1,3 +1,5 @@
+// 字符串模板，看示例就明白用法了 https://github.com/Matt-Esch/string-template
+
 import { hasOwn } from 'element-ui/src/utils/util';
 
 const RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g;
