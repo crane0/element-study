@@ -45,6 +45,7 @@
       }
     }
 
+    // 下拉列表是 ul>li, 这是 ul 的类名
     .el-autocomplete-suggestion__list {
       position: static !important;
       padding-bottom: 28px;
@@ -173,6 +174,7 @@
         this.index = client.initIndex(`element-${ this.lang ? this.langs[this.lang].index : 'zh' }`);
       },
 
+      // 仅当你的输入建议数据 resolve 时，通过调用 callback(data:[]) 来返回它
       querySearch(query, cb) {
         if (!query) return;
         this.index.search({ query, hitsPerPage: 6 }, (err, res) => {

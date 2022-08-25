@@ -7,8 +7,8 @@
   - theme-configurator 未知x
   - demo-block.vue，footer-nav.vue，footer.vue，header.vue，side-nav.vue 会在 entry.js 中全局注册使用。
   - search.vue 在 header.vue 使用，搜索文档。
-  - theme-picker.vue 在 header.vue 使用，未知x
-- demo-styles 页面展示组件效果的样式文件
+  - theme-picker.vue 在 v2.10.1 版本之前，在 header.vue 使用，用于更换主题。
+- demo-styles 官网页面在自己使用 element 组件时，会覆盖组件的部分样式，在 entry.js 全局引入。
 - docs （多语言）组件页面md文件，最终会转化为 vue 渲染到页面上
 - dom/class.js 增删，判断class存在的js方法
 - extension 插件独立项目，这里忽略。
@@ -43,7 +43,7 @@
   - theme.vue 主题页面
 
 - play/index.vue 用来测试和展示组件使用效果的。
-- bus.js 未知x
+- bus.js 在其他组件中，通过 vm.$on('xxx') 和 vm.$emit('xxx') 监听和触发事件，来进行通信。
 - color.js 16进制转RGB, #FFB6C1 --> 255,182,193
 - icon.json 通过 build/bin/iconInit.js 生成，在 entry.js 中引入并挂载到Vue的原型链上。最终在icon组件页面用于展示图标。
 - index.tpl 模板文件，用于webpack打包生成index.html。需要注意的是，可以直接使用 process.env 变量。而不用在 HtmlWebpackPlugin 中定义属性，再到模板中使用 htmlWebpackPlugin.options.xxx 调用。

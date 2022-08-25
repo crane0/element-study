@@ -35,6 +35,7 @@
       border-bottom: 1px solid #DCDFE6;
     }
 
+    // 不再使用 
     .nav-lang-spe {
       color: #888;
     }
@@ -497,6 +498,8 @@
       };
       xhr.open('GET', '/versions.json');
       xhr.send();
+
+      // 主题设置相关
       let primaryLast = '#409EFF';
       bus.$on(ACTION_USER_CONFIG_UPDATE, (val) => {
         let primaryColor = val.global['$--color-primary'];

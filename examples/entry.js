@@ -24,7 +24,7 @@ import FooterNav from './components/footer-nav';
 import title from './i18n/title';
 
 import 'packages/theme-chalk/src/index.scss';
-// 和 demoBlock 组件配套使用，用于展示不同组件的页面效果的样式。
+// 官网页面在自己使用 element 组件时，会覆盖组件的部分样式，这里全局引入。
 import './demo-styles/index.scss';
 // 公共样式
 import './assets/styles/common.css';

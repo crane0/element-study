@@ -64,6 +64,7 @@
         }
       }
   
+      // v2.14.1 版本之前，侧边栏顶部有个赞助图标。
       &.sponsors {
         & > .sub-nav {
           margin-top: -10px;
@@ -126,8 +127,11 @@
         class="nav-item"
         v-for="(item, key) in data"
         :key="key">
+        <!-- 组件和开发指南，这2个1级菜单 -->
         <a v-if="!item.path && !item.href" @click="expandMenu">{{item.name}}</a>
+        <!-- Element React 和 Element Angular 外链-->
         <a v-if="item.href" :href="item.href" target="_blank">{{item.name}}</a>
+        <!-- 更新日志内链 -->
         <router-link
           v-if="item.path"
           active-class="active"
@@ -135,6 +139,7 @@
           exact
           v-text="item.title || item.name">
         </router-link>
+        <!-- 开发指南下的2级菜单 -->
         <ul class="pure-menu-list sub-nav" v-if="item.children">
           <li
             class="nav-item"
@@ -149,6 +154,7 @@
             </router-link>
           </li>
         </ul>
+        <!-- 组件下的3级菜单，对应具体组件。 -->
         <template v-if="item.groups">
           <div
             class="nav-group"
@@ -185,13 +191,13 @@
       data: Array,
       base: {
         type: String,
-        default: ''
+        default: '' // /zh-CN/component
       }
     },
     data() {
       return {
-        highlights: [],
-        navState: [],
+        highlights: [], // 未用到。
+        navState: [], // 未用到。
         isSmallScreen: false,
         isFade: false
       };
@@ -225,6 +231,18 @@
         this.isSmallScreen = document.documentElement.clientWidth < 768;
         this.handlePathChange();
       },
+      /* 
+        menu 相关的，都是组件相关的List
+        组件
+        basic
+        Layout 布局
+        ...
+        From
+        Radio 单选框
+        ...
+        
+        隐藏和展示menu，目标都是三级菜单。
+      */
       handlePathChange() {
         if (!this.isSmallScreen) {
           this.expandAllMenu();
@@ -232,8 +250,10 @@
         }
         this.$nextTick(() => {
           this.hideAllMenu();
+          // 当前选中的tab
           let activeAnchor = this.$el.querySelector('a.active');
           let ul = activeAnchor.parentNode;
+          // ul > li > a，所以得逐级向上查询。
           while (ul.tagName !== 'UL') {
             ul = ul.parentNode;
           }
@@ -241,24 +261,41 @@
         });
       },
       hideAllMenu() {
-        [].forEach.call(this.$el.querySelectorAll('.pure-menu-list'), ul => {
+        // Nodelist 现已支持 forEach
+        this.$el.querySelectorAll('.pure-menu-list').forEach(ul => {
           ul.style.height = '0';
         });
+        // [].forEach.call(this.$el.querySelectorAll('.pure-menu-list'), ul => {
+        //   ul.style.height = '0';
+        // });
       },
       expandAllMenu() {
         [].forEach.call(this.$el.querySelectorAll('.pure-menu-list'), ul => {
           ul.style.height = 'auto';
         });
       },
+      /* 
+        展开当前的 menu
+        div
+          div // currentTarget
+          ul // 要展开的 menu
+      */
       expandMenu(event) {
         if (!this.isSmallScreen) return;
         let target = event.currentTarget;
-        if (!target.nextElementSibling || target.nextElementSibling.tagName !== 'UL') return;
+        if (!target.nextElementSibling || target.nextElementSibling.tagName !== 'UL') return; // 过滤掉组件这个一级菜单
         this.hideAllMenu();
         event.currentTarget.nextElementSibling.style.height = 'auto';
       }
     },
     created() {
+      /* 
+        整体思路，examples/pages/template/component.tpl 下面简写 component.tpl
+        1，在当前组件的 watch 中触发 navFade 事件，该事件在 component.tpl 的 created 监听
+        3，在滚动侧边栏时，在 component.tpl 中触发 fadeNav 事件，该事件在下面监听。
+
+        最终想实现的效果：在选中某组件后，滚动组件页面右侧内容时侧边栏 opacity = 0.5。当再次选择组件时，侧边栏opacity = 1
+      */
       bus.$on('fadeNav', () => {
         this.isFade = true;
       });

@@ -88,6 +88,7 @@
     },
 
     methods: {
+      // 组合组件页面的侧边栏导航。因为层级略有不同。
       setNav() {
         let nav = navConfig[this.lang];
         this.nav = [nav[0]].concat(nav[3].children);
@@ -97,6 +98,7 @@
       },
 
       updateNav() {
+        // path = /zh-CN/component/alert
         this.currentComponent = '/' + this.$route.path.split('/')[3];
         for (let i = 0, len = this.nav.length; i < len; i++) {
           if (this.nav[i].path === this.currentComponent) {

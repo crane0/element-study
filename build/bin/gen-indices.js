@@ -1,13 +1,12 @@
 'use strict';
 /*
-  生成目录，支持搜索？
+  生成组件页面顶部，搜索功能的搜索内容，并上传到 algoliasearch 云服务器。
 */
-
 const fs = require('fs');
 const path = require('path');
 const algoliasearch = require('algoliasearch');
 const slugify = require('transliteration').slugify;
-// 应该是本地密钥，不会上传到 GitHub。
+// Admin API Key，本地保存，所以这里获取不到。
 const key = require('./algolia-key');
 
 const client = algoliasearch('4C63BTGP6S', key);
@@ -26,6 +25,7 @@ const langs = {
     fs.readdir(path.resolve(__dirname, `../../examples/docs/${ lang }`), (err, files) => {
       if (err) return;
       let indices = [];
+      // 文件名数组，每个文件名都是组件名称
       files.forEach(file => {
         const component = file.replace('.md', '');
         const content = fs.readFileSync(path.resolve(__dirname, `../../examples/docs/${ lang }/${ file }`), 'utf8');
@@ -54,6 +54,7 @@ const langs = {
         }));
       });
 
+      // 添加到云服务器。
       index.addObjects(indices, (err, res) => {
         console.log(err, res);
       });

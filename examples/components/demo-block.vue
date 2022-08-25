@@ -7,6 +7,7 @@
     <div class="source">
       <slot name="source"></slot>
     </div>
+    <!-- 代码块box， description 是 :::demo 后面的内容-->
     <div class="meta" ref="meta">
       <div class="description" v-if="$slots.default">
         <slot></slot>
@@ -55,7 +56,7 @@
     code {
       font-family: Menlo, Monaco, Consolas, Courier, monospace;
     }
-
+    // 没有用到
     .demo-button {
       float: right;
     }
@@ -205,6 +206,7 @@
       goCodepen() {
         // since 2.6.2 use code rather than jsfiddle https://blog.codepen.io/documentation/api/prefill/
         const { script, html, style } = this.codepen;
+        // script 标签得分开，否则会解析错误。
         const resourcesTpl = '<scr' + 'ipt src="//unpkg.com/vue@2/dist/vue.js"></scr' + 'ipt>' +
         '\n<scr' + `ipt src="//unpkg.com/element-ui@${ version }/lib/index.js"></scr` + 'ipt>';
         let jsTpl = (script || '').replace(/export default/, 'var Main =').trim();
@@ -218,6 +220,7 @@
           css: cssTpl,
           html: htmlTpl
         };
+        // 历史遗留问题，现在应该不用 fiddle-form 了。
         const form = document.getElementById('fiddle-form') || document.createElement('form');
         while (form.firstChild) {
           form.removeChild(form.firstChild);
@@ -238,8 +241,16 @@
         form.submit();
       },
 
+      // 监听代码块box滚动事件
       scrollHandler() {
+        // https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect
         const { top, bottom, left } = this.$refs.meta.getBoundingClientRect();
+        /* 
+          fixedControl 的作用
+          代码块底部有【隐藏代码+在线运行】的 control, 
+          当代码块box（this.$refs.meta）的底部没有漏出并且顶部漏出时, control 应该贴到页面的底部，需要用 fixed 实现。
+          反之，只需要正常布局到 box 底部即可。
+        */
         this.fixedControl = bottom > document.documentElement.clientHeight &&
           top + 44 <= document.documentElement.clientHeight;
         this.$refs.control.style.left = this.fixedControl ? `${ left }px` : '0';
@@ -275,6 +286,7 @@
         return this.$el.getElementsByClassName('meta')[0];
       },
 
+      // 代码块整体高度
       codeAreaHeight() {
         if (this.$el.getElementsByClassName('description').length > 0) {
           return this.$el.getElementsByClassName('description')[0].clientHeight +
@@ -285,6 +297,7 @@
     },
 
     watch: {
+      // 是否打开代码块 boolean
       isExpanded(val) {
         this.codeArea.style.height = val ? `${ this.codeAreaHeight + 1 }px` : '0';
         if (!val) {
@@ -294,6 +307,7 @@
           return;
         }
         setTimeout(() => {
+          // page-component__scroll 是可滚动区域（超出会隐藏）。el-scrollbar__wrap 是可滚动内容。
           this.scrollParent = document.querySelector('.page-component__scroll > .el-scrollbar__wrap');
           this.scrollParent && this.scrollParent.addEventListener('scroll', this.scrollHandler);
           this.scrollHandler();
@@ -312,6 +326,7 @@
             code = cur.children[0].text;
           }
         }
+        // 代码块的内容
         if (code) {
           this.codepen.html = stripTemplate(code);
           this.codepen.script = stripScript(code);
@@ -322,6 +337,7 @@
 
     mounted() {
       this.$nextTick(() => {
+        // 一般都是 <div class="demo-block demo-zh-CN demo-alert">...</div>，有 highlight 这个 class 的还没有遇到。 
         let highlight = this.$el.getElementsByClassName('highlight')[0];
         if (this.$el.getElementsByClassName('description').length === 0) {
           highlight.style.width = '100%';
