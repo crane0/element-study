@@ -1,12 +1,13 @@
 /*
   目标文件：
-  是 src/locale/lang 文件夹内的js文件（各个语言的翻译），它们都是 CommonJS 模块。
-  js 文件中是否有 exports.__esModule = true;，编译后的UMD模块是有区别的（不影响UMD模块的使用）。
-  主要是 babel 在引入时，处理会有所不同，主要为了处理 default 的问题。
+  src/locale/lang 目录下的 js，它们有的是 esm 模块（af-ZA.js），有的是 cjs 模块（az.js）。
+  cjs 模块的 js 中，添加了 exports.__esModule = true;
+    目的是让 babel 放心加载该模块，并调用 exports.default 这个导出的对象。
+    也就是 ES6 规定的默认导出对象，所以这个模块既符合 CommonJS 标准，又符合 Babel 对 ES6 模块化的需求。
 
   作用：
-  使用 babel 将 CommonJS 模块都转译为 UMD 模块。
-  UMD模块是通用兼容的。
+  使用 babel，用 transform-es2015-modules-umd 来转译 esm 模块为 UMD 模块，
+  但有的模块是 cjs 模块，为了符合 es6 模块化的需求，才有了上面的 exports.__esModule = true; 解释。
 */
 
 var fs = require('fs');
