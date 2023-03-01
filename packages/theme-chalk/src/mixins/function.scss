@@ -4,7 +4,7 @@
  -------------------------- */
 @function selectorToString($selector) {
   $selector: inspect($selector);
-  $selector: str-slice($selector, 2, -2);
+  $selector: str-slice($selector, 2, -2); // 为什么要这样写， el-button--medium 编译为 l-button--mediu
   @return $selector;
 }
 

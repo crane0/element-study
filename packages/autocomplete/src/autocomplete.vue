@@ -230,6 +230,7 @@
         }
       },
       select(item) {
+        // 使用该组件，官网示例展示的使用 v-model 绑定值，但在介绍参数时却是 value。看起来 v-model 是支持的。
         this.$emit('input', item[this.valueKey]);
         this.$emit('select', item);
         this.$nextTick(_ => {

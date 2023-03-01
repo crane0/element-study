@@ -48,9 +48,7 @@
         </i>
       </span>
       <!-- 后置内容 -->
-      <span
-        class="el-input__suffix"
-        v-if="getSuffixVisible()">
+      <span class="el-input__suffix" v-if="getSuffixVisible()">
         <span class="el-input__suffix-inner">
           <template v-if="!showClear || !showPwdVisible || !isWordLimitVisible">
             <slot name="suffix"></slot>
@@ -137,7 +135,7 @@
         textareaCalcStyle: {},
         hovering: false,
         focused: false,
-        isComposing: false,
+        isComposing: false, // 判断输入的值 isKorean
         passwordVisible: false
       };
     },
@@ -170,7 +168,7 @@
           return true;
         }
       },
-      validateEvent: {
+      validateEvent: { // 输入时，是否触发表单校验
         type: Boolean,
         default: true
       },
@@ -196,12 +194,15 @@
       _elFormItemSize() {
         return (this.elFormItem || {}).elFormItemSize;
       },
+      // TODO 验证信息，之后再研究。
       validateState() {
         return this.elFormItem ? this.elFormItem.validateState : '';
       },
+      // Form Attributes，表示是否在输入框中显示 校验结果反馈图标。一般是✔️或x
       needStatusIcon() {
         return this.elForm ? this.elForm.statusIcon : false;
       },
+      // 验证图标
       validateIcon() {
         return {
           validating: 'el-icon-loading',
@@ -209,6 +210,7 @@
           error: 'el-icon-circle-close'
         }[this.validateState];
       },
+      // textarea 内联样式，因为可能需要实时计算 height 和 minHeight。
       textareaStyle() {
         return merge({}, this.textareaCalcStyle, { resize: this.resize });
       },
@@ -218,9 +220,11 @@
       inputDisabled() {
         return this.disabled || (this.elForm || {}).disabled;
       },
+      // 主要作用在，监听这个属性的逻辑。
       nativeInputValue() {
         return this.value === null || this.value === undefined ? '' : String(this.value);
       },
+      // 展示可清空的图标
       showClear() {
         return this.clearable &&
           !this.inputDisabled &&
@@ -228,12 +232,14 @@
           this.nativeInputValue &&
           (this.focused || this.hovering);
       },
+      // 展示密码图标（eye）
       showPwdVisible() {
         return this.showPassword &&
           !this.inputDisabled &&
           !this.readonly &&
           (!!this.nativeInputValue || this.focused);
       },
+      // 展示文本长度，需要同时指定 maxlength 原生属性，才能展示字数统计。
       isWordLimitVisible() {
         return this.showWordLimit &&
           this.$attrs.maxlength &&
@@ -242,6 +248,7 @@
           !this.readonly &&
           !this.showPassword;
       },
+      // 文本最大长度
       upperLimit() {
         return this.$attrs.maxlength;
       },
@@ -252,6 +259,8 @@
 
         return (this.value || '').length;
       },
+      // 当设置 maxlength 后，超出时是无法继续输入的。只有一种情况：当设置的初始值长度超过 maxlenth ，输入框也会显示所有内容。
+      // 此时会加样式进行标注，这就是 inputExceed 的作用。
       inputExceed() {
         // show exceed style if length of initial value greater then maxlength
         return this.isWordLimitVisible &&
@@ -291,6 +300,7 @@
       blur() {
         this.getInput().blur();
       },
+      // 参考 mixin Migrating
       getMigratingConfig() {
         return {
           props: {
@@ -309,13 +319,17 @@
           this.dispatch('ElFormItem', 'el.form.blur', [this.value]);
         }
       },
+      // 无效代码
       select() {
         this.getInput().select();
       },
+      // textarea 才可以调整大小
       resizeTextarea() {
+        // $isServer 表示当前 vue 实例是否运行在服务器（服务端渲染）
         if (this.$isServer) return;
         const { autosize, type } = this;
         if (type !== 'textarea') return;
+        // 不需要自适应高度时，计算最小高度
         if (!autosize) {
           this.textareaCalcStyle = {
             minHeight: calcTextareaHeight(this.$refs.textarea).minHeight
@@ -327,6 +341,7 @@
 
         this.textareaCalcStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows);
       },
+      // 除了手动输入，其他方式触发DOM更新时，应该设置原生的 value
       setNativeInputValue() {
         const input = this.getInput();
         if (!input) return;
@@ -413,6 +428,7 @@
       getInput() {
         return this.$refs.input || this.$refs.textarea;
       },
+      // 是否展示后置内容
       getSuffixVisible() {
         return this.$slots.suffix ||
           this.suffixIcon ||
@@ -424,6 +440,7 @@
     },
 
     created() {
+      // 无效代码，因为当前实例上并没有自定义事件 inputSelect
       this.$on('inputSelect', this.select);
     },
 

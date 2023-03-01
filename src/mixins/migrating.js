@@ -26,8 +26,8 @@ export default {
     if (!this.$vnode) return;
     const { props = {}, events = {} } = this.getMigratingConfig();
     const { data, componentOptions } = this.$vnode;
-    const definedProps = data.attrs || {};
-    const definedEvents = componentOptions.listeners || {};
+    const definedProps = data.attrs || {}; // 表示传递给组件但没有在 props 中声明的属性。
+    const definedEvents = componentOptions.listeners || {}; // 传递给组件的事件
 
     for (let propName in definedProps) {
       propName = kebabCase(propName); // compatible with camel case

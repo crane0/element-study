@@ -29,8 +29,10 @@ const CONTEXT_STYLE = [
 ];
 
 function calculateNodeStyling(targetElement) {
+  // style 是实时的 CSS 对象。
   const style = window.getComputedStyle(targetElement);
 
+  // 返回给定属性的值。
   const boxSizing = style.getPropertyValue('box-sizing');
 
   const paddingSize = (

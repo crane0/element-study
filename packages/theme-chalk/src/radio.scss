@@ -104,7 +104,7 @@
           background-color: $--radio-disabled-icon-color;
         }
 
-        & + .el-radio__label {
+        & + .el-radio__label { // 无效，没有用到
           cursor: not-allowed;
         }
       }

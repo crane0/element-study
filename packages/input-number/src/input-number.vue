@@ -68,7 +68,7 @@
       ElInput
     },
     props: {
-      step: {
+      step: { // 可以为负
         type: Number,
         default: 1
       },
@@ -98,19 +98,24 @@
       name: String,
       label: String,
       placeholder: String,
-      precision: {
+      precision: { // 精度
         type: Number,
         validator(val) {
-          return val >= 0 && val === parseInt(val, 10);
+          return val >= 0 && val === parseInt(val, 10); // 这个正整数判断不错
         }
       }
     },
     data() {
       return {
         currentValue: 0,
-        userInput: null
+        userInput: null  // 输入时先展示输入的内容，输入完成后再展示最终计算结果 displayValue
       };
     },
+    /* 
+      1，watch 传入的 value，当 value 改变时，计算符合规则的 this.currentValue，同时处理了严格步数的逻辑。
+      2，displayValue 中也处理了严格步数的逻辑，因为 this.setCurrentValue 方法中并没有做。
+      所以当 watch 得到的 this.currentValue 触发 displaValue 的执行时，即便有相同的逻辑（处理严格步数），这无法避免，因为情况不同，都有必要。
+    */
     watch: {
       value: {
         immediate: true,
@@ -146,16 +151,21 @@
       maxDisabled() {
         return this._increase(this.value, this.step) > this.max;
       },
+      // 最终精度
       numPrecision() {
         const { value, step, getPrecision, precision } = this;
         const stepPrecision = getPrecision(step);
         if (precision !== undefined) {
           if (stepPrecision > precision) {
+            /*
+              precision 精度（非负整数），不能小于 step 步长的小数位数。
+              比如，步长是 0.01，精度如果是 1 就只有一个小数点，和步长就冲突了。
+            */
             console.warn('[Element Warn][InputNumber]precision should not be less than the decimal places of step');
           }
           return precision;
         } else {
-          return Math.max(getPrecision(value), stepPrecision);
+          return Math.max(getPrecision(value), stepPrecision); // 取最多的小数位数
         }
       },
       controlsAtRight() {
@@ -170,6 +180,7 @@
       inputNumberDisabled() {
         return this.disabled || !!(this.elForm || {}).disabled;
       },
+      // 最终展示的 value，主要是处理 stepStrictly 严格步数的逻辑。
       displayValue() {
         if (this.userInput !== null) {
           return this.userInput;
@@ -197,6 +208,7 @@
         if (precision === undefined) precision = this.numPrecision;
         return parseFloat(Math.round(num * Math.pow(10, precision)) / Math.pow(10, precision));
       },
+      // 计算小数位数。
       getPrecision(value) {
         if (value === undefined) return 0;
         const valueString = value.toString();
@@ -212,6 +224,7 @@
 
         const precisionFactor = Math.pow(10, this.numPrecision);
         // Solve the accuracy problem of JS decimal calculation by converting the value to integer.
+        // 虽然将 js 计算的精度问题抽离为一个方法，但还是要保证传递的参数不要出问题，所以做了如下操作。
         return this.toPrecision((precisionFactor * val + precisionFactor * step) / precisionFactor);
       },
       _decrease(val, step) {

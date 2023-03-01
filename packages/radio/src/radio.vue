@@ -78,6 +78,7 @@
       };
     },
     computed: {
+      // 因为 el-radio-group 的 value disabled size 都会影响 el-radio 的对应属性。
       isGroup() {
         let parent = this.$parent;
         while (parent) {
@@ -90,6 +91,7 @@
         }
         return false;
       },
+      // v-model 绑定的值。
       model: {
         get() {
           return this.isGroup ? this._radioGroup.value : this.value;
@@ -106,6 +108,7 @@
       _elFormItemSize() {
         return (this.elFormItem || {}).elFormItemSize;
       },
+      // 单选框组的size，radio 自己的 size，form 表单的size，全局的size
       radioSize() {
         const temRadioSize = this.size || this._elFormItemSize || (this.$ELEMENT || {}).size;
         return this.isGroup
@@ -117,6 +120,8 @@
           ? this._radioGroup.disabled || this.disabled || (this.elForm || {}).disabled
           : this.disabled || (this.elForm || {}).disabled;
       },
+      // disabled状态，或处于单选框组下的非当前 radio，都不可被tab切换。
+      // 看官网实例的单选框组，通过 tab 切换下就明白了。
       tabIndex() {
         return (this.isDisabled || (this.isGroup && this.model !== this.label)) ? -1 : 0;
       }
