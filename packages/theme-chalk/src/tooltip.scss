@@ -13,7 +13,7 @@
     font-size: $--tooltip-font-size;
     line-height: 1.2;
     min-width: 10px;
-    word-wrap: break-word;
+    word-wrap: break-word; // 新名字叫 overflow-wrap
 
     .popper__arrow,
     .popper__arrow::after {
